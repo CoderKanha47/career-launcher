@@ -1,16 +1,42 @@
-# React + Vite
+# 🚀 CareerLauncher - Education Management Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CareerLauncher is a modern, responsive web application built with **React** and **Tailwind CSS**. It serves as an interactive gateway for students to explore courses, calculate customized fees based on their learning preferences, and submit admission applications.
 
-Currently, two official plugins are available:
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![Swiper](https://img.shields.io/badge/Swiper-6332F6?style=for-the-badge&logo=swiper&logoColor=white)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Dynamic Hero Slider**: High-impact carousel using `Swiper.js` for faculty and placement highlights.
+* **Course Explorer**: Interactive "Know More" cards with hover-reveal details for various competitive exams (IIT-JEE, NEET, UPSC, etc.).
+* **Course Customizer**: A real-time fee calculator logic that adjusts pricing based on:
+    * Subject selection (General vs. Individual).
+    * Learning Mode (Online vs. Offline).
+    * Specific institutional and development fees.
+* **Integrated Admission Form**: A dedicated routing path for student registration.
+* **Responsive Design**: Fully optimized for Mobile, Tablet, and Desktop using Tailwind's utility-first grid system.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+- **Frontend:** React 18
+- **Routing:** React Router DOM v6
+- **Styling:** Tailwind CSS
+- **Components:** Headless UI / Custom Tailwind Components
+- **Icons & Images:** Lucide-react (optional) & Optimized Assets
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to get the project running locally:
+
+### 1. Clone the repository
+```bash
+git clone [https://github.com/your-username/career-launcher.git](https://github.com/your-username/career-launcher.git)
+cd career-launcher
