@@ -98,6 +98,77 @@ const Hero = () => {
   );
 };
 
+// --- Testimonials Component ---
+const Testimonials = () => {
+  const reviews = [
+    {
+      name: "Doraemon",
+      role: "IIT-JEE Student",
+      text: "The faculties here are very experienced and have immense knowledge. The way they simplify complex Physics is amazing!",
+      avatar: "https://ui-avatars.com/api/?name=Doraemon&background=0D8ABC&color=fff"
+    },
+    {
+      name: "Shin-Chan",
+      role: "UPSC Student",
+      text: "I cleared my UPSC in 2025 by studying from this institution. Their current affairs analysis is the best in the business.",
+      avatar: "https://ui-avatars.com/api/?name=Shin+Chan&background=facc15&color=000"
+    },
+    {
+      name: "Pako",
+      role: "NEET Student",
+      text: "This institute has all the facilities such as smartboards and comfortable seating to facilitate long lectures. I am really impressed!",
+      avatar: "https://ui-avatars.com/api/?name=Pako&background=ef4444&color=fff"
+    },
+    {
+      name: "Zen",
+      role: "OSSC Student",
+      text: "I cleared my OSSC examination in the first attempt and right now I am posted in Bhadrak. Highly recommended for state exams!",
+      avatar: "https://ui-avatars.com/api/?name=Zen&background=22c55e&color=fff"
+    }
+  ];
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-6 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">What Our Students Say</h2>
+        <p className="text-gray-600 mb-12">Success stories from the halls of CareerLauncher.</p>
+
+        <Swiper
+          spaceBetween={30}
+          pagination={{ clickable: true }}
+          breakpoints={{
+            640: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          }}
+          modules={[Pagination]}
+          className="pb-12 testimonials-swiper"
+        >
+          {reviews.map((rev, i) => (
+            <SwiperSlide key={i} className="h-auto">
+              <div className="bg-slate-50 p-8 rounded-2xl border border-gray-100 h-full flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div className="mb-6">
+                  <div className="text-blue-600 text-4xl mb-4 font-serif">“</div>
+                  <p className="text-gray-700 italic leading-relaxed text-sm md:text-base">
+                    {rev.text}
+                  </p>
+                </div>
+                <div className="flex items-center gap-4 border-t border-gray-200 pt-6">
+                  <img src={rev.avatar} alt={rev.name} className="h-12 w-12 rounded-full border-2 border-blue-100" />
+                  <div className="text-left">
+                    <h4 className="font-bold text-gray-900">{rev.name}</h4>
+                    <p className="text-xs text-blue-600 font-medium uppercase tracking-wider">{rev.role}</p>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </section>
+  );
+};
+
 // --- 3. Home Page (What users see first) ---
 const HomePage = () => (
   <>
@@ -106,19 +177,22 @@ const HomePage = () => (
       <h1 className="text-5xl font-black mb-6">Shape Your Future</h1>
       <p className="text-lg text-gray-600 max-w-2xl mx-auto">Expert coaching for career excellence.</p>
     </section>
+    
+    {/* This is where the magic happens */}
+    <Testimonials />
   </>
 );
 
 // --- 4. Courses Component ---
 const Courses = () => {
   const courseList = [
-    { title: "IIT-JEE Prep", duration: "2 years", icon: "iitLogo.jpg", desc: "Comprehensive coaching for Physics, Chemistry, and Maths.", batches: "4", packages: "Full", fees: "₹75,000" },
-    { title: "NEET Prep", duration: "1 years", icon: "neet.jpg", desc: "Expert guidance for Biology and entrance exam mastery.", batches: "4", packages: "Full Course", fees: "₹80,000" },
+    { title: "IIT-JEE Prep", duration: "2 years", icon: "iitLogo.jpg", desc: "Comprehensive coaching for Physics, Chemistry, and Maths.", batches: "2", packages: "Full", fees: "₹75,000" },
+    { title: "NEET Prep", duration: "1 years", icon: "neet.jpg", desc: "Expert guidance for Biology and entrance exam mastery.", batches: "2", packages: "Full Course", fees: "₹80,000" },
     { title: "Foundation Wing", duration: "2 years", icon: "foundation.jpg", desc: "Strengthening basics for Class 8th to 10th students.", batches: "1", packages: "Full", fees: "₹10,000" },
     { title: "Crash Course", duration: "3 Months", icon: "crashcourse.png", desc: "Intensive revision and mock tests for final leaps.", batches: "2", packages: null, fees: "₹45,000" },
     { title: "UPSC Preparation", duration: "1 Year", icon: "upsc.jpg", desc: "Complete study of course and Intense Revision for UPSC.", batches: "2 (*+1 depending on strength)", packages: "Full, Revision Only", fees: "*subject to package" },
     { title: "SSC Preparation", duration: "1 Year", icon: "ssc.jfif", desc: "Complete study of course and Intense Revision for SSC.", batches: "2(*+2 depending on strength)", packages: "Full, Revision Only", fees: "*subject to package" },
-    { title: "OPSC Preparation", duration: "1 Year", icon: "opsc.jfif", desc: "Complete study of course and Intense Revision for OPSC.", batches: "2(*+1 depending on strength)", packages: "Full, Revision Only", fees: "₹55,000" },
+    { title: "OPSC Preparation", duration: "1 Year", icon: "opsc.jfif", desc: "Complete study of course and Intense Revision for OPSC.", batches: "2(*+1 depending on strength)", packages: "Full, Revision Only", fees: "*subject to package" },
     { title: "OSSC Preparation", duration: "1 Year", icon: "ossc.png", desc: "Complete study of course and Intense Revision for OSSC.", batches: "2", packages: "Full", fees: "₹62,000" },
     { title: "PGDCA Course", duration: "1 Year", icon: "pgdca.jpg", desc: "Expert training of the course with hands-on experience.", batches: "1", packages: "Certification", fees: "₹15,000" },
   ];
@@ -211,9 +285,7 @@ const Footer = () => (
   </footer>
 );
 
-
-
-// --- 7. MAIN ASSEMBLY (ONLY ONE APP DEFINITION) ---
+// --- 7. MAIN ASSEMBLY ---
 export default function App() {
   return (
     <Router>
