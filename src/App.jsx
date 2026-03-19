@@ -192,16 +192,30 @@ const HomePage = () => (
         </p>
 
         {/* The Button Container */}
-        <div className="flex justify-center">
+        <div className="flex flex-row justify-center items-center gap-4 mt-10">
+
+          {/* Button 1: Explore */}
           <Link
             to="/courses"
-            className="inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 text-white px-10 py-4 rounded-2xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl"
+            className="inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl"
           >
             Explore All Courses
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
           </Link>
+
+          {/* Button 2: Customize */}
+          <Link
+            to="/customize"
+            className="inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl"
+          >
+            Customize Your Course
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </Link>
+
         </div>
 
       </div>
@@ -369,8 +383,8 @@ const Footer = () => (
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              >
-                
+            >
+
             </iframe>
           </div>
         </div>
