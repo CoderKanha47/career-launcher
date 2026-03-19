@@ -1,43 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CustomizeCourse = () => {
     // --- 1. STATE ---
     const [selections, setSelections] = useState({
-        category: 'Banking Sector',
+        category: 'IIT-JEE', // Set a valid default from your logic
         subjects: [],
         mode: 'Online'
     });
 
     const [modalConfig, setModalConfig] = useState({ show: false, type: '' });
 
-    const handleEnrollClick = () => {
-        if (selections.subjects.length === 0) {
-            setModalConfig({ show: true, type: 'error' });
-        } else {
-            setModalConfig({ show: true, type: 'policy' });
+    // --- 2. SIDE EFFECTS ---
+    // Automatically remove Biology if category switches to IIT-JEE
+    useEffect(() => {
+        if (selections.category === 'IIT-JEE' && selections.subjects.includes('Biology')) {
+            setSelections(prev => ({
+                ...prev,
+                subjects: prev.subjects.filter(s => s !== 'Biology')
+            }));
         }
-    };
+    }, [selections.category]);
 
-    // --- 2. LOGIC ---
+    // --- 3. LOGIC ---
     const calculateFees = () => {
         let tuition = 0;
         let institutionFee = 0;
         let developmentFee = 0;
         let onlineArrangementFee = 0;
 
-        // --- Dynamic Tuition Logic ---
         if (selections.subjects.includes('General')) {
-            // If General is selected, price depends on the Category
             tuition = selections.category === 'IIT-JEE' ? 4000 : 5500;
         } else {
-            // Individual subject pricing (Standard 1500 per subject)
             if (selections.subjects.includes('Maths')) tuition += 1500;
             if (selections.subjects.includes('Physics')) tuition += 1500;
             if (selections.subjects.includes('Chemistry')) tuition += 1500;
             if (selections.subjects.includes('Biology')) tuition += 1500;
         }
 
-        // --- Mode Fees ---
         if (selections.mode === 'Offline') {
             institutionFee = 500;
             developmentFee = 100;
@@ -51,7 +50,7 @@ const CustomizeCourse = () => {
 
     const { tuition, institutionFee, developmentFee, onlineArrangementFee, total } = calculateFees();
 
-    // --- 3. HANDLERS ---
+    // --- 4. HANDLERS ---
     const toggleSubject = (sub) => {
         setSelections(prev => {
             let newSubs = [...prev.subjects];
@@ -63,9 +62,19 @@ const CustomizeCourse = () => {
                 } else {
                     newSubs.push(sub);
                 }
+                // Remove General if individual subjects are picked
+                newSubs = newSubs.filter(s => s !== 'General');
             }
             return { ...prev, subjects: newSubs };
         });
+    };
+
+    const handleEnrollClick = () => {
+        if (selections.subjects.length === 0) {
+            setModalConfig({ show: true, type: 'error' });
+        } else {
+            setModalConfig({ show: true, type: 'policy' });
+        }
     };
 
     return (
@@ -77,69 +86,80 @@ const CustomizeCourse = () => {
 
                     {/* LEFT SIDE: SELECTIONS */}
                     <div className="space-y-8">
+                        {/* CATEGORY SELECTION */}
                         <div>
                             <label className="block font-bold mb-3">1. Preparing for?</label>
                             <select
-                                className="w-full p-3 rounded-xl border border-gray-200"
+                                className="w-full p-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
                                 value={selections.category}
-                                onChange={(e) => {
-                                    const val = e.target.value;
-                                    setSelections(prev => ({
-                                        ...prev,
-                                        category: val,
-                                        // If they switch to IIT-JEE, we MUST remove Biology if it was selected
-                                        subjects: val === 'IIT-JEE'
-                                            ? prev.subjects.filter(s => s !== 'Biology')
-                                            : prev.subjects
-                                    }));
-                                }}
+                                onChange={(e) => setSelections({ ...selections, category: e.target.value })}
                             >
-                                <option value="IIT-JEE">IIT-JEE</option>
-                                <option value="NEET">NEET</option>
+                                <option value="IIT-JEE">IIT-JEE (Engineering)</option>
+                                <option value="NEET">NEET (Medical)</option>
                             </select>
                         </div>
 
+                        {/* SUBJECT SELECTION */}
                         <div>
-                            <label className="block font-bold mb-3">2. Subjects</label>
+                            <label className="block font-bold mb-3">2. Select Subjects</label>
                             <div className="space-y-3">
                                 {['General', 'Maths', 'Physics', 'Chemistry', 'Biology'].map(sub => {
-                                    // Determine if this specific checkbox should be disabled
-                                    const isBiologyDisabled = selections.category === 'IIT-JEE' && sub === 'Biology';
-                                    const isGeneralActive = selections.subjects.includes('General') && sub !== 'General';
+                                    const isBioDisabled = selections.category === 'IIT-JEE' && sub === 'Biology';
+                                    const isOtherDisabled = selections.subjects.includes('General') && sub !== 'General';
+
+                                    // Determine price to display
+                                    let priceDisplay = "";
+                                    if (sub === 'General') {
+                                        priceDisplay = selections.category === 'IIT-JEE' ? "₹4000" : "₹5500";
+                                    } else {
+                                        priceDisplay = "₹1500";
+                                    }
 
                                     return (
                                         <label
                                             key={sub}
-                                            className={`flex items-center p-3 rounded-xl border transition 
-                ${isBiologyDisabled ? 'opacity-50 cursor-not-allowed bg-gray-100' : 'cursor-pointer'}
-                ${selections.subjects.includes(sub) ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-100'}`}
+                                            className={`flex items-center p-4 rounded-xl border transition 
+                        ${isBioDisabled ? 'opacity-40 cursor-not-allowed bg-gray-50' : 'cursor-pointer'}
+                        ${selections.subjects.includes(sub) ? 'bg-blue-50 border-blue-500 shadow-sm' : 'bg-white border-gray-100 hover:border-blue-200'}`}
                                         >
                                             <input
                                                 type="checkbox"
-                                                className="mr-3 h-5 w-5"
+                                                className="mr-4 h-5 w-5 cursor-pointer disabled:cursor-not-allowed accent-blue-600"
                                                 checked={selections.subjects.includes(sub)}
-                                                // Disable if General is picked OR if it's Biology during IIT-JEE prep
-                                                disabled={isGeneralActive || isBiologyDisabled}
+                                                disabled={isBioDisabled || (isOtherDisabled && sub !== 'General')}
                                                 onChange={() => toggleSubject(sub)}
                                             />
-                                            <span>
-                                                {sub} {sub === 'General' ? '(All Subjects)' : ''}
-                                                {isBiologyDisabled && <span className="text-xs ml-2 text-red-500">(Unavailable for this Preparation)</span>}
-                                            </span>
+                                            <div className="flex justify-between items-center w-full">
+                                                <span className="font-medium text-gray-800">
+                                                    {sub} {sub === 'General' ? '(All-in-One)' : ''}
+                                                </span>
+
+                                                <span className={`text-sm font-bold ${isBioDisabled ? 'text-gray-400' : 'text-blue-600'}`}>
+                                                    {isOtherDisabled ? (
+                                                        <span className="text-green-600 italic font-normal">Included in General</span>
+                                                    ) : (
+                                                        isBioDisabled ? "N/A" : priceDisplay
+                                                    )}
+                                                </span>
+                                            </div>
                                         </label>
                                     );
                                 })}
                             </div>
+                            {selections.category === 'IIT-JEE' && (
+                                <p className="mt-2 text-xs text-gray-500 italic">* Biology is strictly for NEET preparation only.</p>
+                            )}
                         </div>
 
+                        {/* MODE SELECTION */}
                         <div>
-                            <label className="block font-bold mb-3">3. Mode</label>
+                            <label className="block font-bold mb-3">3. Learning Mode</label>
                             <div className="flex gap-4">
                                 {['Online', 'Offline'].map(m => (
                                     <button
                                         key={m}
                                         onClick={() => setSelections({ ...selections, mode: m })}
-                                        className={`flex-1 py-3 rounded-xl font-bold border transition ${selections.mode === m ? 'bg-blue-700 text-white border-blue-700' : 'bg-white text-gray-600 border-gray-200'}`}
+                                        className={`flex-1 py-3 rounded-xl font-bold border transition ${selections.mode === m ? 'bg-blue-700 text-white border-blue-700 shadow-md' : 'bg-white text-gray-600 border-gray-200'}`}
                                     >
                                         {m}
                                     </button>
@@ -149,50 +169,44 @@ const CustomizeCourse = () => {
                     </div>
 
                     {/* RIGHT SIDE: FEE BREAKDOWN */}
-                    <div className="bg-blue-900 text-white p-8 rounded-2xl flex flex-col justify-between">
+                    <div className="bg-blue-900 text-white p-8 rounded-2xl flex flex-col justify-between shadow-2xl">
                         <div>
                             <h3 className="text-xl font-bold mb-6 border-b border-blue-700 pb-4 text-blue-200">Fee Breakdown</h3>
                             <div className="space-y-4">
                                 <div className="flex justify-between">
-                                    <span>
-                                        Tuition (Monthly)
-                                        {selections.subjects.includes('General') && (
-                                            <span className="text-xs block text-blue-400">
-                                                {/* Full {selections.category} Pack */}
-                                            </span>
-                                        )}
-                                    </span>
-                                    <span>₹{tuition}</span>
+                                    <span>Tuition {selections.subjects.includes('General') ? '(Pack)' : `(${selections.subjects.length} Subjects)`}</span>
+                                    <span className="font-mono">₹{tuition}</span>
                                 </div>
 
                                 {selections.mode === 'Offline' ? (
                                     <>
                                         <div className="flex justify-between text-sm text-blue-300">
-                                            <span>+ Institution Fee (OneTime)</span>
-                                            <span>₹{institutionFee}</span>
+                                            <span>+ Institution Fee</span>
+                                            <span className="font-mono">₹{institutionFee}</span>
                                         </div>
                                         <div className="flex justify-between text-sm text-blue-300">
-                                            <span>+ Development Fee (OneTime)</span>
-                                            <span>₹{developmentFee}</span>
+                                            <span>+ Development Fee</span>
+                                            <span className="font-mono">₹{developmentFee}</span>
                                         </div>
                                     </>
                                 ) : (
                                     <div className="flex justify-between text-sm text-blue-300">
                                         <span>+ Online Arrangement</span>
-                                        <span>₹{onlineArrangementFee}</span>
+                                        <span className="font-mono">₹{onlineArrangementFee}</span>
                                     </div>
                                 )}
                             </div>
                         </div>
 
                         <div className="mt-10 border-t border-blue-700 pt-6">
-                            <div className="flex justify-between items-end">
-                                <span className="text-blue-300">Joining Fee </span>
-                                <span className="text-4xl font-black text-green-400">₹{total}</span>
+                            <div className="flex justify-between items-end mb-8">
+                                <span className="text-blue-300">Total Joining Fee</span>
+                                <span className="text-4xl font-black text-green-400 font-mono">₹{total}</span>
                             </div>
                             <button
                                 onClick={handleEnrollClick}
-                                className="w-full mt-8 bg-green-500 hover:bg-green-600 py-4 rounded-xl font-black text-lg transition shadow-lg text-white">
+                                className="w-full bg-green-500 hover:bg-green-600 py-4 rounded-xl font-black text-lg transition transform hover:scale-[1.02] active:scale-95 shadow-lg text-white"
+                            >
                                 Confirm & Enroll
                             </button>
                         </div>
@@ -200,10 +214,10 @@ const CustomizeCourse = () => {
                 </div>
             </div>
 
-            {/* --- GUI MODAL --- */}
+            {/* --- MODAL --- */}
             {modalConfig.show && (
                 <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl animate-in fade-in zoom-in duration-200">
+                    <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
                         <div className="text-center">
                             {modalConfig.type === 'error' ? (
                                 <>
@@ -212,13 +226,13 @@ const CustomizeCourse = () => {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                                         </svg>
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Subject Required</h3>
-                                    <p className="text-gray-600">Please select at least one subject before enrolling.</p>
+                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Select a Subject</h3>
+                                    <p className="text-gray-600 mb-6">Please select at least one subject to calculate your personalized fee.</p>
                                     <button
                                         onClick={() => setModalConfig({ show: false, type: '' })}
-                                        className="w-full mt-8 bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-xl transition-colors"
+                                        className="w-full bg-gray-800 text-white font-bold py-3 rounded-xl"
                                     >
-                                        Go Back
+                                        Got it
                                     </button>
                                 </>
                             ) : (
@@ -228,16 +242,15 @@ const CustomizeCourse = () => {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                                         </svg>
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Fee Policy</h3>
-                                    <p className="text-gray-600 leading-relaxed">
-                                        This is <span className="font-bold text-gray-800">first-time Joining fee</span>.
-                                        The Tuition fee shall be charged on a monthly basis without any hidden cost.
+                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Enrollment Policy</h3>
+                                    <p className="text-gray-600 text-sm mb-6">
+                                        The amount <span className="font-bold text-blue-700">₹{total}</span> is the initial admission fee. Regular tuition will be billed monthly.
                                     </p>
                                     <button
                                         onClick={() => setModalConfig({ show: false, type: '' })}
-                                        className="w-full mt-8 bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-xl transition-colors shadow-md"
+                                        className="w-full bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg"
                                     >
-                                        I Understand & Proceed
+                                        Accept & Proceed
                                     </button>
                                 </>
                             )}
