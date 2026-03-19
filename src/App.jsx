@@ -20,7 +20,7 @@ const Header = () => (
     <nav className="container mx-auto flex items-center justify-between p-4">
       <Link to="/" className="flex items-center gap-3">
         <div className="h-10 w-10 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold">CL</div>
-        <span className="text-xl font-bold tracking-tight text-gray-900">CareerLauncher</span>
+        <span className="text-xl font-bold tracking-tight text-gray-900">EDU HUB</span>
       </Link>
       <ul className="hidden md:flex gap-8 font-medium text-gray-600">
         <li><Link to="/" className="hover:text-blue-700">Home</Link></li>
@@ -133,7 +133,7 @@ const Testimonials = () => {
     <section className="py-20 bg-white">
       <div className="container mx-auto px-6 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">What Our Students Say</h2>
-        <p className="text-gray-600 mb-12">Success stories from the halls of CareerLauncher.</p>
+        <p className="text-gray-600 mb-12">Success stories from the halls of EDU HUB.</p>
 
         <Swiper
           spaceBetween={30}
@@ -333,7 +333,7 @@ const Footer = () => (
         <div className="space-y-4">
           <div className="flex items-center gap-3 text-white">
             <div className="h-8 w-8 bg-blue-600 rounded flex items-center justify-center font-bold">CL</div>
-            <span className="text-xl font-bold tracking-tight">CareerLauncher</span>
+            <span className="text-xl font-bold tracking-tight">EDU HUB</span>
           </div>
           <p className="text-sm leading-relaxed text-gray-400">
             Empowering students to achieve their dreams through expert guidance,
@@ -361,7 +361,7 @@ const Footer = () => (
             </li>
             <li className="flex gap-3">
               <span className="text-blue-500">✉️</span>
-              <a href="mailto:info@careerlauncher.com" className="hover:text-white transition-colors">info@careerlauncher.com</a>
+              <a href="mailto:info@eduhub.com" className="hover:text-white transition-colors">info@eduhub.com</a>
             </li>
             <li className="flex gap-3">
               <span className="text-blue-500">⏰</span>
@@ -376,7 +376,7 @@ const Footer = () => (
           <div className="w-full h-40 rounded-xl overflow-hidden grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500 shadow-lg">
             {/* Replace the src with your actual Google Maps Embed link */}
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1030.8306616031684!2d85.620517803114!3d21.624988177227344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1efdf61e87b1b9%3A0xd06cf13a0108af5e!2sCareer%20Booster!5e0!3m2!1sen!2sin!4v1773890262867!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1854.4796664197565!2d85.62086863879384!3d21.626508288443638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1efd474d2e35cb%3A0xa76c14d4be45c955!2sLIC%20Office%20Rd%2C%20Keonjhar%2C%20Odisha%20758014!5e0!3m2!1sen!2sin!4v1773905159329!5m2!1sen!2sin"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -393,7 +393,7 @@ const Footer = () => (
 
       {/* Bottom Copyright Section */}
       <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-        <p>© 2026 CareerLauncher. All Rights Reserved.</p>
+        <p>© 2026 EduHub. All Rights Reserved.</p>
         <div className="flex gap-6">
           <Link to="/privacy" className="hover:text-white">Privacy Policy</Link>
           <Link to="/terms" className="hover:text-white">Terms of Service</Link>
@@ -437,7 +437,7 @@ const WhyChooseUs = () => {
     <section className="py-20 bg-white">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose CareerLauncher?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose EDU HUB?</h2>
           <div className="h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
         </div>
 
