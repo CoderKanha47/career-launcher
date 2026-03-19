@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import CustomizeCourse from './CustomizeCourse';
-import AdmissionForm from './admissionForm';
+import AdmissionForm from './AdmissionForm';
 import ScrollToTop from './ScrollToTop';
 
 // import { Link } from 'react-router-dom';
