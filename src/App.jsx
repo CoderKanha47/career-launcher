@@ -5,6 +5,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import CustomizeCourse from './CustomizeCourse';
 import AdmissionForm from './admissionForm';
+import ScrollToTop from './ScrollToTop';
+
 // import { Link } from 'react-router-dom';
 
 
@@ -33,9 +35,9 @@ const Header = () => (
 // --- 2. Hero Component ---
 const Hero = () => {
   const slides = [
-    { url: '/student1.jpg', title: 'Expert Faculty', sub: 'Learn from the best in the industry' },
-    { url: '/student2.jpg', title: 'Top Placements', sub: 'Our students work at global companies' },
-    { url: '/student3.jpg', title: 'Modern Campus', sub: 'State-of-the-art learning facilities' },
+    { url: '/student1.jpg', title: 'Expert Faculty', sub: 'Learn from the best and experienced teachers' },
+    { url: '/student2.jpg', title: 'Top Placements', sub: 'Our students crack competitive examinations in one shot' },
+    { url: '/campus1.jpg', title: 'Modern Classrooms', sub: 'Modern learning facilities' },
   ];
 
   return (
@@ -43,7 +45,7 @@ const Hero = () => {
       <Swiper
         spaceBetween={0}
         centeredSlides={true}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
@@ -102,28 +104,28 @@ const Hero = () => {
 const Testimonials = () => {
   const reviews = [
     {
-      name: "Doraemon",
+      name: "Ram",
       role: "IIT-JEE Student",
       text: "The faculties here are very experienced and have immense knowledge. The way they simplify complex Physics is amazing!",
-      avatar: "https://ui-avatars.com/api/?name=Doraemon&background=0D8ABC&color=fff"
+      avatar: "https://ui-avatars.com/api/?name=Ram&background=0D8ABC&color=fff"
     },
     {
-      name: "Shin-Chan",
+      name: "Navin",
       role: "UPSC Student",
       text: "I cleared my UPSC in 2025 by studying from this institution. Their current affairs analysis is the best in the business.",
-      avatar: "https://ui-avatars.com/api/?name=Shin+Chan&background=facc15&color=000"
+      avatar: "https://ui-avatars.com/api/?name=Navin"
     },
     {
-      name: "Pako",
+      name: "Ritesh",
       role: "NEET Student",
       text: "This institute has all the facilities such as smartboards and comfortable seating to facilitate long lectures. I am really impressed!",
-      avatar: "https://ui-avatars.com/api/?name=Pako&background=ef4444&color=fff"
+      avatar: "https://ui-avatars.com/api/?name=Ritesh&background=ef4444&color=fff"
     },
     {
-      name: "Zen",
+      name: "Manish Ram",
       role: "OSSC Student",
       text: "I cleared my OSSC examination in the first attempt and right now I am posted in Bhadrak. Highly recommended for state exams!",
-      avatar: "https://ui-avatars.com/api/?name=Zen&background=22c55e&color=fff"
+      avatar: "https://ui-avatars.com/api/?name=Manish+Ram&background=22c55e&color=fff"
     }
   ];
 
@@ -170,15 +172,41 @@ const Testimonials = () => {
 };
 
 // --- 3. Home Page (What users see first) ---
+// --- 3. Home Page ---
 const HomePage = () => (
   <>
     <Hero />
-    <section className="py-20 text-center bg-slate-50">
-      <h1 className="text-5xl font-black mb-6">Shape Your Future</h1>
-      <p className="text-lg text-gray-600 max-w-2xl mx-auto">Expert coaching for career excellence.</p>
+    <WhyChooseUs />
+
+    {/* Ensure this section has flex and items-center to keep things truly centered */}
+    <section className="py-24 bg-slate-50 flex flex-col items-center justify-center text-center">
+      <div className="container mx-auto px-6 max-w-4xl">
+
+        <h2 className="text-3xl md:text-5xl font-black mb-6 text-gray-900 leading-tight">
+          We offer Standard Courses and <br className="hidden md:block" />
+          <span className="text-blue-700">Courses Customized by You</span>
+        </h2>
+
+        <p className="text-lg text-gray-600 mb-10 mx-auto max-w-2xl">
+          From competitive exams to skill-based certifications, we provide expert coaching tailored to your career goals.
+        </p>
+
+        {/* The Button Container */}
+        <div className="flex justify-center">
+          <Link
+            to="/courses"
+            className="inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 text-white px-10 py-4 rounded-2xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl"
+          >
+            Explore All Courses
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </Link>
+        </div>
+
+      </div>
     </section>
-    
-    {/* This is where the magic happens */}
+
     <Testimonials />
   </>
 );
@@ -186,15 +214,18 @@ const HomePage = () => (
 // --- 4. Courses Component ---
 const Courses = () => {
   const courseList = [
-    { title: "IIT-JEE Prep", duration: "2 years", icon: "iitLogo.jpg", desc: "Comprehensive coaching for Physics, Chemistry, and Maths.", batches: "2", packages: "Full", fees: "₹75,000" },
-    { title: "NEET Prep", duration: "1 years", icon: "neet.jpg", desc: "Expert guidance for Biology and entrance exam mastery.", batches: "2", packages: "Full Course", fees: "₹80,000" },
-    { title: "Foundation Wing", duration: "2 years", icon: "foundation.jpg", desc: "Strengthening basics for Class 8th to 10th students.", batches: "1", packages: "Full", fees: "₹10,000" },
-    { title: "Crash Course", duration: "3 Months", icon: "crashcourse.png", desc: "Intensive revision and mock tests for final leaps.", batches: "2", packages: null, fees: "₹45,000" },
+    // { title: "IIT-JEE Preparation", duration: "2 years", icon: "iitLogo.jpg", desc: "Comprehensive coaching for Physics, Chemistry, and Maths.", batches: "2", packages: "Full", fees: "₹75,000" },
+    // { title: "NEET Preparation", duration: "1 years", icon: "neet.jpg", desc: "Expert guidance for Biology and entrance exam mastery.", batches: "2", packages: "Full Course", fees: "₹80,000" },
     { title: "UPSC Preparation", duration: "1 Year", icon: "upsc.jpg", desc: "Complete study of course and Intense Revision for UPSC.", batches: "2 (*+1 depending on strength)", packages: "Full, Revision Only", fees: "*subject to package" },
     { title: "SSC Preparation", duration: "1 Year", icon: "ssc.jfif", desc: "Complete study of course and Intense Revision for SSC.", batches: "2(*+2 depending on strength)", packages: "Full, Revision Only", fees: "*subject to package" },
     { title: "OPSC Preparation", duration: "1 Year", icon: "opsc.jfif", desc: "Complete study of course and Intense Revision for OPSC.", batches: "2(*+1 depending on strength)", packages: "Full, Revision Only", fees: "*subject to package" },
     { title: "OSSC Preparation", duration: "1 Year", icon: "ossc.png", desc: "Complete study of course and Intense Revision for OSSC.", batches: "2", packages: "Full", fees: "₹62,000" },
     { title: "PGDCA Course", duration: "1 Year", icon: "pgdca.jpg", desc: "Expert training of the course with hands-on experience.", batches: "1", packages: "Certification", fees: "₹15,000" },
+    { title: "Banking Exam Preparation", duration: "1 Year", icon: "banking1.jpg", desc: "Full course study and intensive revision for various banking selection posts like SBI PO.", batches: "1", packages: "Full", fees: "₹35,000" },
+    { title: "Railway Exam Preparation", duration: "1 Year", icon: "railway1.png", desc: "Full course study and intensive revision for RRB-NTPC, RRB-ALP, RRB-JE.", batches: "1", packages: "Full", fees: "₹30,000" },
+    { title: "Foundation Wing", duration: "1 years", icon: "foundation.jpg", desc: "Strengthening basics for Class 8th to 10th students. (For School Students)", batches: "1", packages: "Full", fees: "₹10,000" },
+    { title: "Crash Course", duration: "3 Months", icon: "crashcourse.png", desc: "Intensive revision and mock tests for final leaps.", batches: "2", packages: null, fees: "₹45,000" },
+
   ];
 
   return (
@@ -233,15 +264,14 @@ const Courses = () => {
                   <p><span className="font-bold text-blue-200">Duration:</span> {course.duration}</p>
                 </div>
 
-                {/* WhatsApp Enquiry Button */}
-                <a
-                  // href={`https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20know%20more%20about%20${course.title}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-6 bg-white text-blue-700 px-6 py-2 rounded-full font-bold text-xs hover:bg-blue-50 transition-colors shadow-lg"
+                {/* Changed from <a> to <Link> to navigate to /admission */}
+                <Link
+                  to="/admission"
+                  state={{ selectedCourse: course.title }}
+                  className="mt-6 bg-white text-blue-700 px-6 py-2 rounded-full font-bold text-xs hover:bg-blue-50 transition-colors shadow-lg inline-block text-center"
                 >
                   Register Now
-                </a>
+                </Link>
               </div>
             </div> /* Card ends here cleanly! */
           ))}
@@ -279,16 +309,152 @@ const FeesTable = () => {
 };
 
 // --- 6. Footer ---
+// --- 6. Footer ---
 const Footer = () => (
-  <footer className="bg-gray-950 text-gray-400 py-10 text-center">
-    <p>© 2026 CareerLauncher. Dedicated to Success.</p>
+  <footer className="bg-gray-950 text-gray-300 pt-16 pb-8">
+    <div className="container mx-auto px-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+
+        {/* Column 1: Brand & About */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3 text-white">
+            <div className="h-8 w-8 bg-blue-600 rounded flex items-center justify-center font-bold">CL</div>
+            <span className="text-xl font-bold tracking-tight">CareerLauncher</span>
+          </div>
+          <p className="text-sm leading-relaxed text-gray-400">
+            Empowering students to achieve their dreams through expert guidance,
+            comprehensive study materials, and a commitment to excellence.
+          </p>
+          <div className="flex gap-4 pt-2">
+            {/* Replace # with actual social links */}
+            <a href="#" className="hover:text-blue-500 transition-colors">Facebook</a>
+            <a href="#" className="hover:text-blue-400 transition-colors">Twitter</a>
+            <a href="#" className="hover:text-pink-500 transition-colors">Instagram</a>
+          </div>
+        </div>
+
+        {/* Column 2: Contact Details */}
+        <div className="space-y-4">
+          <h4 className="text-white font-bold text-lg">Contact Us</h4>
+          <ul className="space-y-3 text-sm">
+            <li className="flex gap-3">
+              <span className="text-blue-500">📍</span>
+              <span>Mandua<br />Near LIC Office <br />Keonjhar, Odisha - 758001</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="text-blue-500">📞</span>
+              <a href="tel:+91XXXXXXXXXX" className="hover:text-white transition-colors">+91 94311 00000</a>
+            </li>
+            <li className="flex gap-3">
+              <span className="text-blue-500">✉️</span>
+              <a href="mailto:info@careerlauncher.com" className="hover:text-white transition-colors">info@careerlauncher.com</a>
+            </li>
+            <li className="flex gap-3">
+              <span className="text-blue-500">⏰</span>
+              <span>Office Hours - Mon - Sat: 10:00 AM - 8:00 PM</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Column 3: Location Map */}
+        <div className="space-y-4">
+          <h4 className="text-white font-bold text-lg">Find Us</h4>
+          <div className="w-full h-40 rounded-xl overflow-hidden grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500 shadow-lg">
+            {/* Replace the src with your actual Google Maps Embed link */}
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1030.8306616031684!2d85.620517803114!3d21.624988177227344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1efdf61e87b1b9%3A0xd06cf13a0108af5e!2sCareer%20Booster!5e0!3m2!1sen!2sin!4v1773890262867!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              >
+                
+            </iframe>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Bottom Copyright Section */}
+      <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+        <p>© 2026 CareerLauncher. All Rights Reserved.</p>
+        <div className="flex gap-6">
+          <Link to="/privacy" className="hover:text-white">Privacy Policy</Link>
+          <Link to="/terms" className="hover:text-white">Terms of Service</Link>
+        </div>
+      </div>
+    </div>
   </footer>
 );
+
+// --8. Why Choose Us
+
+const WhyChooseUs = () => {
+  const features = [
+    {
+      title: "Experienced Faculty",
+      desc: "Learn from industry veterans with over 10+ years of teaching excellence.",
+      icon: "👨‍🏫",
+      color: "bg-blue-50"
+    },
+    {
+      title: "Smart Classrooms",
+      desc: "Modern infrastructure with interactive smart boards and digital learning aids.",
+      icon: "💻",
+      color: "bg-indigo-50"
+    },
+    {
+      title: "AnyTime Support",
+      desc: "Direct access to mentors for doubt clearing, even outside class hours.",
+      icon: "📞",
+      color: "bg-green-50"
+    },
+    {
+      title: "Support Materials",
+      desc: "Exhaustive study modules, daily practice papers, and recorded lectures.",
+      icon: "📚",
+      color: "bg-purple-50"
+    }
+  ];
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose CareerLauncher?</h2>
+          <div className="h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((item, index) => (
+            <div
+              key={index}
+              className={`aspect-square p-8 rounded-3xl ${item.color} flex flex-col justify-center items-center text-center border border-transparent hover:border-blue-200 hover:shadow-xl transition-all duration-300 group`}
+            >
+              <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform">
+                {item.icon}
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-3 leading-tight">
+                {item.title}
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 // --- 7. MAIN ASSEMBLY ---
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="font-sans antialiased">
         <Header />
         <Routes>

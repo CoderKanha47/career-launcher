@@ -25,19 +25,24 @@ const CustomizeCourse = () => {
         let developmentFee = 0;
         let onlineArrangementFee = 0;
 
+        // --- Dynamic Tuition Logic ---
         if (selections.subjects.includes('General')) {
-            tuition = 2000;
+            // If General is selected, price depends on the Category
+            tuition = selections.category === 'IIT-JEE' ? 4000 : 5500;
         } else {
-            if (selections.subjects.includes('Maths')) tuition += 1000;
-            if (selections.subjects.includes('Reasoning')) tuition += 800;
-            if (selections.subjects.includes('Science')) tuition += 1000;
+            // Individual subject pricing (Standard 1500 per subject)
+            if (selections.subjects.includes('Maths')) tuition += 1500;
+            if (selections.subjects.includes('Physics')) tuition += 1500;
+            if (selections.subjects.includes('Chemistry')) tuition += 1500;
+            if (selections.subjects.includes('Biology')) tuition += 1500;
         }
 
+        // --- Mode Fees ---
         if (selections.mode === 'Offline') {
             institutionFee = 500;
             developmentFee = 100;
         } else {
-            onlineArrangementFee = 200;
+            onlineArrangementFee = 500;
         }
 
         const total = tuition + institutionFee + developmentFee + onlineArrangementFee;
@@ -77,28 +82,53 @@ const CustomizeCourse = () => {
                             <select
                                 className="w-full p-3 rounded-xl border border-gray-200"
                                 value={selections.category}
-                                onChange={(e) => setSelections({ ...selections, category: e.target.value })}
+                                onChange={(e) => {
+                                    const val = e.target.value;
+                                    setSelections(prev => ({
+                                        ...prev,
+                                        category: val,
+                                        // If they switch to IIT-JEE, we MUST remove Biology if it was selected
+                                        subjects: val === 'IIT-JEE'
+                                            ? prev.subjects.filter(s => s !== 'Biology')
+                                            : prev.subjects
+                                    }));
+                                }}
                             >
-                                <option>Banking Sector</option>
-                                <option>Indian Railways</option>
+                                <option value="IIT-JEE">IIT-JEE</option>
+                                <option value="NEET">NEET</option>
                             </select>
                         </div>
 
                         <div>
                             <label className="block font-bold mb-3">2. Subjects</label>
                             <div className="space-y-3">
-                                {['General', 'Maths', 'Reasoning', 'Science'].map(sub => (
-                                    <label key={sub} className={`flex items-center p-3 rounded-xl border cursor-pointer transition ${selections.subjects.includes(sub) ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-100'}`}>
-                                        <input
-                                            type="checkbox"
-                                            className="mr-3 h-5 w-5"
-                                            checked={selections.subjects.includes(sub)}
-                                            disabled={selections.subjects.includes('General') && sub !== 'General'}
-                                            onChange={() => toggleSubject(sub)}
-                                        />
-                                        <span>{sub} {sub === 'General' ? '(All Subjects)' : ''}</span>
-                                    </label>
-                                ))}
+                                {['General', 'Maths', 'Physics', 'Chemistry', 'Biology'].map(sub => {
+                                    // Determine if this specific checkbox should be disabled
+                                    const isBiologyDisabled = selections.category === 'IIT-JEE' && sub === 'Biology';
+                                    const isGeneralActive = selections.subjects.includes('General') && sub !== 'General';
+
+                                    return (
+                                        <label
+                                            key={sub}
+                                            className={`flex items-center p-3 rounded-xl border transition 
+                ${isBiologyDisabled ? 'opacity-50 cursor-not-allowed bg-gray-100' : 'cursor-pointer'}
+                ${selections.subjects.includes(sub) ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-100'}`}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                className="mr-3 h-5 w-5"
+                                                checked={selections.subjects.includes(sub)}
+                                                // Disable if General is picked OR if it's Biology during IIT-JEE prep
+                                                disabled={isGeneralActive || isBiologyDisabled}
+                                                onChange={() => toggleSubject(sub)}
+                                            />
+                                            <span>
+                                                {sub} {sub === 'General' ? '(All Subjects)' : ''}
+                                                {isBiologyDisabled && <span className="text-xs ml-2 text-red-500">(Unavailable for this Preparation)</span>}
+                                            </span>
+                                        </label>
+                                    );
+                                })}
                             </div>
                         </div>
 
@@ -124,18 +154,25 @@ const CustomizeCourse = () => {
                             <h3 className="text-xl font-bold mb-6 border-b border-blue-700 pb-4 text-blue-200">Fee Breakdown</h3>
                             <div className="space-y-4">
                                 <div className="flex justify-between">
-                                    <span>Tuition (Monthly)</span>
+                                    <span>
+                                        Tuition (Monthly)
+                                        {selections.subjects.includes('General') && (
+                                            <span className="text-xs block text-blue-400">
+                                                {/* Full {selections.category} Pack */}
+                                            </span>
+                                        )}
+                                    </span>
                                     <span>₹{tuition}</span>
                                 </div>
 
                                 {selections.mode === 'Offline' ? (
                                     <>
                                         <div className="flex justify-between text-sm text-blue-300">
-                                            <span>+ Institution Fee</span>
+                                            <span>+ Institution Fee (OneTime)</span>
                                             <span>₹{institutionFee}</span>
                                         </div>
                                         <div className="flex justify-between text-sm text-blue-300">
-                                            <span>+ Development Fee</span>
+                                            <span>+ Development Fee (OneTime)</span>
                                             <span>₹{developmentFee}</span>
                                         </div>
                                     </>
