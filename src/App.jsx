@@ -20,7 +20,7 @@ const Header = () => (
     <nav className="container mx-auto flex items-center justify-between p-4">
       <Link to="/" className="flex items-center gap-3">
         <div className="h-10 w-10 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold">CL</div>
-        <span className="text-xl font-bold tracking-tight text-gray-900">EDU HUB</span>
+        <span className="text-xl font-bold tracking-tight text-gray-900">EDU-HUB Academy </span>
       </Link>
       <ul className="hidden md:flex gap-8 font-medium text-gray-600">
         <li><Link to="/" className="hover:text-blue-700">Home</Link></li>
@@ -41,62 +41,97 @@ const Hero = () => {
   ];
 
   return (
-    <section className="relative h-[70vh] w-full overflow-hidden">
-      <Swiper
-        spaceBetween={0}
-        centeredSlides={true}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
-        pagination={{ clickable: true }}
-        navigation={true}
-        modules={[Autoplay, Pagination, Navigation]}
-        className="h-full w-full"
-      >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <div
-              className="relative h-full w-full bg-cover bg-center flex items-center justify-center"
-              style={{ backgroundImage: `url(${slide.url})` }}
-            >
-              {/* Dark Overlay */}
-              <div className="absolute inset-0 bg-black/50" />
-
-              {/* Content Container */}
-              <div className="relative z-10 text-center text-white px-4">
-                <h2 className="text-4xl md:text-6xl font-black mb-4 uppercase tracking-tight">
-                  {slide.title}
-                </h2>
-                <p className="text-lg md:text-xl mb-8 font-medium opacity-90">
-                  {slide.sub}
-                </p>
-
-                {/* Button Group */}
-                <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-
-                  {/* Internal React Link */}
-                  <Link
-                    to="/admission"
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition shadow-lg inline-block text-center w-48"
-                  >
-                    Enroll Now
-                  </Link>
-
-                  {/* External WhatsApp Link */}
-                  <a
-                    href="https://wa.me/91XXXXXXXXXX?text=Hi! I want to enquire about your courses."
-                    target="_blank"
-                    rel="noreferrer"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition inline-block text-center w-48"
-                  >
-                    WhatsApp Us
-                  </a>
-
+    <>
+      {/* 1. Main Hero Slider Section */}
+      <section className="relative h-[70vh] w-full overflow-hidden">
+        <Swiper
+          spaceBetween={0}
+          centeredSlides={true}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          pagination={{ clickable: true }}
+          navigation={true}
+          modules={[Autoplay, Pagination, Navigation]}
+          className="h-full w-full"
+        >
+          {slides.map((slide, index) => (
+            <SwiperSlide key={index}>
+              <div
+                className="relative h-full w-full bg-cover bg-center flex items-center justify-center"
+                style={{ backgroundImage: `url(${slide.url})` }}
+              >
+                <div className="absolute inset-0 bg-black/50" />
+                <div className="relative z-10 text-center text-white px-4">
+                  <h2 className="text-4xl md:text-6xl font-black mb-4 uppercase tracking-tight">
+                    {slide.title}
+                  </h2>
+                  <p className="text-lg md:text-xl mb-8 font-medium opacity-90">
+                    {slide.sub}
+                  </p>
+                  <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+                    <Link
+                      to="/admission"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition shadow-lg inline-block text-center w-48"
+                    >
+                      Enroll Now
+                    </Link>
+                    <a
+                      href="https://wa.me/91XXXXXXXXXX?text=Hi! I want to enquire."
+                      target="_blank"
+                      rel="noreferrer"
+                      className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition inline-block text-center w-48"
+                    >
+                      WhatsApp Us
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </section>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+
+      {/* 2. Announcement Strip (Moved outside the 70vh section) */}
+      <div className="bg-linear-to-r from-yellow-500 to-yellow-300 border-y border-yellow-500 overflow-hidden py-3 shadow-md relative z-20">
+        <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] cursor-pointer">
+          {/* We use a flex-row with gap to keep text flowing */}
+          <div className="flex shrink-0">
+            {[1, 2, 3, 4].map((i) => (
+              <span key={i} className="text-blue-900 font-black text-lg uppercase tracking-widest px-10">
+                🚀 Limited Seats !! Admission Open for UPSC Batch 2026-27 — Join Now 🚀
+              </span>
+            ))}
+          </div>
+          {/* Duplicate for seamless loop */}
+          <div className="flex shrink-0">
+            {[1, 2, 3, 4].map((i) => (
+              <span key={`dup-${i}`} className="text-blue-700 font-black text-lg uppercase tracking-widest px-5">
+                🚀 Limited Seats !! Admission Open for UPSC Batch 2026-27 — Join Now 🚀
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Brand Statement Section */}
+      <section className="py-10 md:py-24 bg-slate-50">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-normal">
+            Keonjhar's <span className="text-blue-700">Most Preferred</span> Coaching Center <br className="hidden md:block" />
+            for Competitive Exams
+          </h2>
+
+          {/* Decorative underline */}
+          <div className="mt-8 flex justify-center">
+            <div className="h-2 w-24 bg-blue-600 rounded-full"></div>
+            <div className="h-2 w-4 bg-blue-200 rounded-full ml-2"></div>
+          </div>
+
+          <p className="mt-8 text-gray-500 text-lg md:text-xl max-w-2xl mx-auto font-medium">
+            Join thousands of successful students who trusted our expert faculty and proven result-oriented methodology.
+          </p>
+        </div>
+      </section>
+
+    </>
   );
 };
 
@@ -179,7 +214,7 @@ const HomePage = () => (
     <WhyChooseUs />
 
     {/* Ensure this section has flex and items-center to keep things truly centered */}
-    <section className="py-24 bg-slate-50 flex flex-col items-center justify-center text-center">
+    <section className="py-10 bg-slate-50 flex flex-col items-center justify-center text-center">
       <div className="container mx-auto px-6 max-w-4xl">
 
         <h2 className="text-3xl md:text-5xl font-black mb-6 text-gray-900 leading-tight">
@@ -223,6 +258,7 @@ const HomePage = () => (
 
     <Testimonials />
   </>
+
 );
 
 // --- 4. Courses Component ---
@@ -333,7 +369,7 @@ const Footer = () => (
         <div className="space-y-4">
           <div className="flex items-center gap-3 text-white">
             <div className="h-8 w-8 bg-blue-600 rounded flex items-center justify-center font-bold">CL</div>
-            <span className="text-xl font-bold tracking-tight">EDU HUB</span>
+            <span className="text-xl font-bold tracking-tight">EDU-HUB Academy</span>
           </div>
           <p className="text-sm leading-relaxed text-gray-400">
             Empowering students to achieve their dreams through expert guidance,
@@ -434,10 +470,10 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-10 bg-white">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose EDU HUB?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose EDUHUB Academy?</h2>
           <div className="h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
         </div>
 
@@ -460,8 +496,51 @@ const WhyChooseUs = () => {
           ))}
         </div>
       </div>
+      {/* Milestones Section */}
+      <section className="py-20 bg-slate-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-black text-slate-900 uppercase tracking-tight">
+              Milestones of our Institution
+            </h2>
+            <div className="h-1.5 w-20 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+
+            {/* Card 1: Students */}
+            <div className="bg-white p-10 rounded-3xl shadow-xl border border-blue-50 text-center transform hover:-translate-y-2 transition-transform duration-300">
+              <div className="text-5xl font-black text-blue-600 mb-4">500+</div>
+              <h3 className="text-xl font-bold text-slate-800 uppercase tracking-wide">
+                Students Tutored
+              </h3>
+              <p className="text-gray-500 mt-2 font-medium">& counting...</p>
+            </div>
+
+            {/* Card 2: Selections */}
+            <div className="bg-white p-10 rounded-3xl shadow-xl border border-green-50 text-center transform hover:-translate-y-2 transition-transform duration-300">
+              <div className="text-5xl font-black text-green-600 mb-4">50+</div>
+              <h3 className="text-xl font-bold text-slate-800 uppercase tracking-wide">
+                Success Selections
+              </h3>
+              <p className="text-gray-500 mt-2 font-medium">In Competitive Exams</p>
+            </div>
+
+            {/* Card 3: Experience */}
+            <div className="bg-white p-10 rounded-3xl shadow-xl border border-orange-50 text-center transform hover:-translate-y-2 transition-transform duration-300">
+              <div className="text-5xl font-black text-orange-600 mb-4">5+</div>
+              <h3 className="text-xl font-bold text-slate-800 uppercase tracking-wide">
+                Years Experience
+              </h3>
+              <p className="text-gray-500 mt-2 font-medium">Of Academic Excellence</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
     </section>
   );
+
 };
 
 // --- 7. MAIN ASSEMBLY ---

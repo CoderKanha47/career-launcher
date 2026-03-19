@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+/* Standard CSS Keyframes - No @theme needed, no warnings! */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Custom Utility Class */
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 100s linear infinite;
+}
+
+/* Pause helper */
+.pause-hover:hover {
+  animation-play-state: paused;
+}
