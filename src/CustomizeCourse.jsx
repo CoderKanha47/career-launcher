@@ -181,7 +181,7 @@ const CustomizeCourse = () => {
                                     <><div className="flex justify-between text-xm text-blue-300"><span>+ Admission Fee(One-Time)</span><span>₹{institutionFee}</span></div>
                                     <div className="flex justify-between text-xm text-blue-300"><span>+ Infrastructure(One-Time)</span><span>₹{developmentFee}</span></div></>
                                 ) : (
-                                    <div className="flex justify-between text-xm text-blue-300"><span>+ Digital Portal(One-Time)</span><span>₹{onlineArrangementFee}</span></div>
+                                    <div className="flex justify-between text-xm text-blue-300"><span>+ Online Arrangement(One-Time)</span><span>₹{onlineArrangementFee}</span></div>
                                 )}
                             </div>
                         </div>
@@ -216,7 +216,7 @@ const CustomizeCourse = () => {
                             <div className="text-center">
                                 <h3 className="text-xl font-bold text-slate-800 mb-2 uppercase tracking-widest">Enrollment Policy</h3>
                                 <p className="text-slate-600 text-sm mb-6">
-                                    The amount <span className="font-bold text-blue-700">₹{total}</span> is the one time admission fee.<br /> Monthly tuition starts next month.
+                                    The amount <span className="font-bold text-blue-700">₹{total}</span> is the one time admission fee including the subjects selected.<br /> Tuition fee for the subjects selecteed will be billed monthly.
                                 </p>
                                 <div className="space-y-3">
                                     <button onClick={() => setModalConfig({ ...modalConfig, type: 'email' })} className="w-full bg-blue-700 text-white py-4 rounded-xl font-black uppercase">Accept & Proceed</button>
