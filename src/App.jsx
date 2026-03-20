@@ -378,6 +378,7 @@ const Footer = () => (
           <div className="w-full h-40 rounded-xl overflow-hidden grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500 shadow-lg">
             {/* Replace the src with your actual Google Maps Embed link */}
             <iframe
+              title='Google Maps Location of EDU-HUB Academy'
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1854.4796664197565!2d85.62086863879384!3d21.626508288443638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1efd474d2e35cb%3A0xa76c14d4be45c955!2sLIC%20Office%20Rd%2C%20Keonjhar%2C%20Odisha%20758014!5e0!3m2!1sen!2sin!4v1773905159329!5m2!1sen!2sin"
               width="100%"
               height="100%"
@@ -394,7 +395,7 @@ const Footer = () => (
       </div>
 
       {/* Bottom Copyright Section */}
-      <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+      <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-300">
         <p>© 2026 EduHub. All Rights Reserved.</p>
         <div className="flex gap-6">
           <Link to="/privacy" className="hover:text-white">Privacy Policy</Link>
@@ -516,6 +517,7 @@ export default function App() {
       <ScrollToTop />
       <div className="font-sans antialiased">
         <Header />
+        <main id='main-content'></main>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/courses" element={<Courses />} />
