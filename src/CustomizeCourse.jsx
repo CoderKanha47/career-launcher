@@ -178,10 +178,10 @@ const CustomizeCourse = () => {
                             <div className="space-y-4">
                                 <div className="flex justify-between text-sm"><span>Tuition</span><span className="font-mono">₹{tuition}</span></div>
                                 {selections.mode === 'Offline' ? (
-                                    <><div className="flex justify-between text-xm text-blue-300"><span>+ Admission Fee</span><span>₹{institutionFee}</span></div>
-                                    <div className="flex justify-between text-xm text-blue-300"><span>+ Infrastructure</span><span>₹{developmentFee}</span></div></>
+                                    <><div className="flex justify-between text-xm text-blue-300"><span>+ Admission Fee(One-Time)</span><span>₹{institutionFee}</span></div>
+                                    <div className="flex justify-between text-xm text-blue-300"><span>+ Infrastructure(One-Time)</span><span>₹{developmentFee}</span></div></>
                                 ) : (
-                                    <div className="flex justify-between text-xm text-blue-300"><span>+ Digital Portal</span><span>₹{onlineArrangementFee}</span></div>
+                                    <div className="flex justify-between text-xm text-blue-300"><span>+ Digital Portal(One-Time)</span><span>₹{onlineArrangementFee}</span></div>
                                 )}
                             </div>
                         </div>
