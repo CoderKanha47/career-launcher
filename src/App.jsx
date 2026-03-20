@@ -334,7 +334,7 @@ const Footer = () => (
         {/* Column 1: Brand & About */}
         <div className="space-y-4">
           <div className="flex items-center gap-3 text-white">
-            <div className="h-8 w-8 bg-blue-600 rounded flex items-center justify-center font-bold">CL</div>
+            <div className="h-8 w-8 bg-blue-600 rounded flex items-center justify-center font-bold">EH</div>
             <span className="text-xl font-bold tracking-tight">EDU-HUB Academy</span>
           </div>
           <p className="text-sm leading-relaxed text-gray-300">
