@@ -41,97 +41,63 @@ const Hero = () => {
   ];
 
   return (
-    <>
-      {/* 1. Main Hero Slider Section */}
-      <section className="relative h-[70vh] w-full overflow-hidden">
-        <Swiper
-          spaceBetween={0}
-          centeredSlides={true}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
-          navigation={true}
-          modules={[Autoplay, Pagination, Navigation]}
-          className="h-full w-full"
-        >
-          {slides.map((slide, index) => (
-            <SwiperSlide key={index}>
-              <div
-                className="relative h-full w-full bg-cover bg-center flex items-center justify-center"
-                style={{ backgroundImage: `url(${slide.url})` }}
-              >
-                <div className="absolute inset-0 bg-black/50" />
-                <div className="relative z-10 text-center text-white px-4">
-                  <h2 className="text-4xl md:text-6xl font-black mb-4 uppercase tracking-tight">
-                    {slide.title}
-                  </h2>
-                  <p className="text-lg md:text-xl mb-8 font-medium opacity-90">
-                    {slide.sub}
-                  </p>
-                  <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-                    <Link
-                      to="/admission"
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition shadow-lg inline-block text-center w-48"
-                    >
-                      Enroll Now
-                    </Link>
-                    <a
-                      href="https://wa.me/91XXXXXXXXXX?text=Hi! I want to enquire."
-                      target="_blank"
-                      rel="noreferrer"
-                      className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition inline-block text-center w-48"
-                    >
-                      WhatsApp Us
-                    </a>
+    <section className="relative w-full bg-white overflow-hidden">
+      {/* Main Container: Stacked on mobile, Side-by-side on Medium screens (md:) */}
+      <div className="flex flex-col md:flex-row min-h-[60vh] lg:h-[70vh]">
+        
+        {/* --- LEFT SIDE: TEXT CONTENT --- */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center p-8 md:p-16 lg:p-24 bg-white">
+          <span className="text-blue-700 font-bold uppercase tracking-widest mb-4 block">
+            Welcome to EDU-HUB
+          </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-tight mb-6">
+            Build Your <span className="text-blue-700">Future</span> With Confidence.
+          </h1>
+          <p className="text-lg text-gray-600 mb-8 max-w-lg">
+            Keonjhar's leading academy for UPSC, SSC, and competitive excellence. 
+            Personalized coaching designed for your success.
+          </p>
+          
+          <div className="flex flex-wrap gap-4">
+            <Link to="/admission" className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition-all">
+              Enroll Now
+            </Link>
+            <Link to="/courses" className="border-2 border-slate-200 hover:border-blue-700 px-8 py-4 rounded-xl font-bold transition-all text-slate-700">
+              View Courses
+            </Link>
+          </div>
+        </div>
+
+        {/* --- RIGHT SIDE: THE SLIDER --- */}
+        <div className="w-full md:w-1/2 h-[40vh] md:h-auto">
+          <Swiper
+            spaceBetween={0}
+            centeredSlides={true}
+            autoplay={{ delay: 3500, disableOnInteraction: false }}
+            pagination={{ clickable: true }}
+            modules={[Autoplay, Pagination]}
+            className="h-full w-full"
+          >
+            {slides.map((slide, index) => (
+              <SwiperSlide key={index}>
+                <div
+                  className="relative h-full w-full bg-cover bg-center"
+                  style={{ backgroundImage: `url(${slide.url})` }}
+                >
+                  {/* Subtle Gradient Overlay to make the image look premium */}
+                  <div className="absolute inset-0 bg-linear-to-r from-slate-50/20 to-transparent" />
+                  
+                  {/* Optional: Small floating caption on the image */}
+                  <div className="absolute bottom-10 left-10 z-10 bg-white/90 backdrop-blur-md p-4 rounded-lg shadow-xl hidden lg:block">
+                    <p className="text-blue-700 font-bold text-sm uppercase">{slide.title}</p>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
-
-      {/* 2. Announcement Strip (Moved outside the 70vh section) */}
-      <div className="bg-linear-to-r from-yellow-500 to-yellow-300 border-y border-yellow-500 overflow-hidden py-3 shadow-md relative z-20">
-        <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] cursor-pointer">
-          {/* We use a flex-row with gap to keep text flowing */}
-          <div className="flex shrink-0">
-            {[1, 2, 3, 4].map((i) => (
-              <span key={i} className="text-blue-900 font-black text-lg uppercase tracking-widest px-10">
-                🚀 Limited Seats !! Admission Open for UPSC Batch 2026-27 — Join Now 🚀
-              </span>
+              </SwiperSlide>
             ))}
-          </div>
-          {/* Duplicate for seamless loop */}
-          <div className="flex shrink-0">
-            {[1, 2, 3, 4].map((i) => (
-              <span key={`dup-${i}`} className="text-blue-700 font-black text-lg uppercase tracking-widest px-5">
-                🚀 Limited Seats !! Admission Open for UPSC Batch 2026-27 — Join Now 🚀
-              </span>
-            ))}
-          </div>
+          </Swiper>
         </div>
       </div>
-      {/* Brand Statement Section */}
-      <section className="py-10 md:py-24 bg-slate-50">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-normal">
-            Keonjhar's <span className="text-blue-700">Most Preferred</span> Coaching Center <br className="hidden md:block" />
-            for Competitive Exams
-          </h2>
-
-          {/* Decorative underline */}
-          <div className="mt-8 flex justify-center">
-            <div className="h-2 w-24 bg-blue-600 rounded-full"></div>
-            <div className="h-2 w-4 bg-blue-200 rounded-full ml-2"></div>
-          </div>
-
-          <p className="mt-8 text-gray-500 text-lg md:text-xl max-w-2xl mx-auto font-medium">
-            Join thousands of successful students who trusted our expert faculty and proven result-oriented methodology.
-          </p>
-        </div>
-      </section>
-
-    </>
+    </section>
   );
 };
 
@@ -214,7 +180,7 @@ const HomePage = () => (
     <WhyChooseUs />
 
     {/* Ensure this section has flex and items-center to keep things truly centered */}
-    <section className="py-10 bg-slate-50 flex flex-col items-center justify-center text-center">
+    <section className="py-9 bg-slate-200 flex flex-col items-center justify-center text-center">
       <div className="container mx-auto px-6 max-w-4xl">
 
         <h2 className="text-3xl md:text-5xl font-black mb-6 text-gray-900 leading-tight">
@@ -470,7 +436,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-10 bg-white">
+    <section className="pt-15  bg-slate-200">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose EDUHUB Academy?</h2>
@@ -497,7 +463,7 @@ const WhyChooseUs = () => {
         </div>
       </div>
       {/* Milestones Section */}
-      <section className="py-20 bg-slate-50">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black text-slate-900 uppercase tracking-tight">
