@@ -258,7 +258,7 @@ const Courses = () => {
               <div className="transition-opacity duration-300 group-hover:opacity-0">
                 <div className="mb-4 h-20 w-20 mx-auto flex items-center justify-center">
                   {course.icon.includes('.') ? (
-                    <img src={`/${course.icon}`} alt="" className="max-h-full max-w-full object-contain" />
+                    <img src={`/${course.icon}`} alt="{course.title}" className="max-h-full max-w-full object-contain" />
                   ) : (
                     <span className="text-4xl">{course.icon}</span>
                   )}
@@ -337,7 +337,7 @@ const Footer = () => (
             <div className="h-8 w-8 bg-blue-600 rounded flex items-center justify-center font-bold">CL</div>
             <span className="text-xl font-bold tracking-tight">EDU-HUB Academy</span>
           </div>
-          <p className="text-sm leading-relaxed text-gray-400">
+          <p className="text-sm leading-relaxed text-gray-300">
             Empowering students to achieve their dreams through expert guidance,
             comprehensive study materials, and a commitment to excellence.
           </p>
