@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
 const CustomizeCourse = () => {
-    // --- 1. STATE ---
     const [selections, setSelections] = useState({
-        category: 'IIT-JEE', // Set a valid default from your logic
+        category: 'IIT-JEE',
         subjects: [],
         mode: 'Online'
     });
 
     const [modalConfig, setModalConfig] = useState({ show: false, type: '' });
+    const [email, setEmail] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // --- 2. SIDE EFFECTS ---
-    // Automatically remove Biology if category switches to IIT-JEE
     useEffect(() => {
-        if (selections.category === 'IIT-JEE' && selections.subjects.includes('Biology')) {
-            setSelections(prev => ({
-                ...prev,
-                subjects: prev.subjects.filter(s => s !== 'Biology')
-            }));
-        }
-    }, [selections.category]);
+        const handleEsc = (e) => {
+            if (e.key === 'Escape') setModalConfig({ show: false, type: '' });
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => window.removeEventListener('keydown', handleEsc);
+    }, []);
 
-    // --- 3. LOGIC ---
     const calculateFees = () => {
         let tuition = 0;
         let institutionFee = 0;
@@ -38,8 +35,7 @@ const CustomizeCourse = () => {
         }
 
         if (selections.mode === 'Offline') {
-            institutionFee = 500;
-            developmentFee = 100;
+            institutionFee = 500; developmentFee = 100;
         } else {
             onlineArrangementFee = 500;
         }
@@ -50,7 +46,6 @@ const CustomizeCourse = () => {
 
     const { tuition, institutionFee, developmentFee, onlineArrangementFee, total } = calculateFees();
 
-    // --- 4. HANDLERS ---
     const toggleSubject = (sub) => {
         setSelections(prev => {
             let newSubs = [...prev.subjects];
@@ -62,14 +57,13 @@ const CustomizeCourse = () => {
                 } else {
                     newSubs.push(sub);
                 }
-                // Remove General if individual subjects are picked
                 newSubs = newSubs.filter(s => s !== 'General');
             }
             return { ...prev, subjects: newSubs };
         });
     };
 
-    const handleEnrollClick = () => {
+    const handleConfirmClick = () => {
         if (selections.subjects.length === 0) {
             setModalConfig({ show: true, type: 'error' });
         } else {
@@ -77,20 +71,55 @@ const CustomizeCourse = () => {
         }
     };
 
+    // --- RESTORED & MOVED INSIDE COMPONENT ---
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const formData = {
+            email: email,
+            category: selections.category,
+            subjects: selections.subjects.join(', '),
+            mode: selections.mode,
+            totalFee: `₹${total}`,
+            message: `New Enrollment Request for ${selections.category}`
+        };
+
+        try {
+            const response = await fetch("https://formspree.io/f/xjgazbbp", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                setModalConfig({ show: true, type: 'success' });
+            } else {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.error || "Submission failed."}`);
+            }
+        } catch (error) {
+            alert("Network error. Please check your connection.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <section className="py-20 bg-slate-50 min-h-screen">
             <div className="container mx-auto px-6 max-w-4xl">
-                <h2 className="text-3xl font-bold text-center mb-10">Customize Your Course</h2>
-
+                <h2 className="text-3xl font-bold text-center mb-10 text-slate-800">Customize Your Course</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
-
-                    {/* LEFT SIDE: SELECTIONS */}
+                    
+                    {/* LEFT SIDE */}
                     <div className="space-y-8">
-                        {/* CATEGORY SELECTION */}
                         <div>
-                            <label className="block font-bold mb-3">1. Preparing for?</label>
+                            <label className="block font-bold mb-3 text-slate-700">1. Preparing for?</label>
                             <select
-                                className="w-full p-3 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full p-4 rounded-xl border border-gray-200 font-medium outline-none focus:ring-2 focus:ring-blue-500"
                                 value={selections.category}
                                 onChange={(e) => setSelections({ ...selections, category: e.target.value })}
                             >
@@ -99,68 +128,42 @@ const CustomizeCourse = () => {
                             </select>
                         </div>
 
-                        {/* SUBJECT SELECTION */}
                         <div>
-                            <label className="block font-bold mb-3">2. Select Subjects</label>
+                            <label className="block font-bold mb-3 text-slate-700">2. Select Subjects</label>
                             <div className="space-y-3">
                                 {['General', 'Maths', 'Physics', 'Chemistry', 'Biology'].map(sub => {
                                     const isBioDisabled = selections.category === 'IIT-JEE' && sub === 'Biology';
-                                    const isOtherDisabled = selections.subjects.includes('General') && sub !== 'General';
-
-                                    // Determine price to display
-                                    let priceDisplay = "";
-                                    if (sub === 'General') {
-                                        priceDisplay = selections.category === 'IIT-JEE' ? "₹4000" : "₹5500";
-                                    } else {
-                                        priceDisplay = "₹1500";
-                                    }
+                                    const isIncluded = selections.subjects.includes('General') && sub !== 'General';
+                                    const price = sub === 'General' ? (selections.category === 'IIT-JEE' ? "4000" : "5500") : "1500";
 
                                     return (
-                                        <label
-                                            key={sub}
-                                            className={`flex items-center p-4 rounded-xl border transition 
-                        ${isBioDisabled ? 'opacity-40 cursor-not-allowed bg-gray-50' : 'cursor-pointer'}
-                        ${selections.subjects.includes(sub) ? 'bg-blue-50 border-blue-500 shadow-sm' : 'bg-white border-gray-100 hover:border-blue-200'}`}
-                                        >
+                                        <label key={sub} className={`flex items-center p-4 rounded-xl border transition ${isBioDisabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:border-blue-300'} ${selections.subjects.includes(sub) ? 'bg-blue-50 border-blue-500 shadow-sm' : 'bg-white border-gray-100'}`}>
                                             <input
                                                 type="checkbox"
-                                                className="mr-4 h-5 w-5 cursor-pointer disabled:cursor-not-allowed accent-blue-600"
+                                                className="mr-4 h-5 w-5 accent-blue-600"
                                                 checked={selections.subjects.includes(sub)}
-                                                disabled={isBioDisabled || (isOtherDisabled && sub !== 'General')}
+                                                disabled={isBioDisabled || isIncluded}
                                                 onChange={() => toggleSubject(sub)}
                                             />
-                                            <div className="flex justify-between items-center w-full">
-                                                <span className="font-medium text-gray-800">
-                                                    {sub} {sub === 'General' ? '(All-in-One)' : ''}
-                                                </span>
-
-                                                <span className={`text-sm font-bold ${isBioDisabled ? 'text-gray-400' : 'text-blue-600'}`}>
-                                                    {isOtherDisabled ? (
-                                                        <span className="text-green-600 italic font-normal">Included in General</span>
-                                                    ) : (
-                                                        isBioDisabled ? "N/A" : priceDisplay
-                                                    )}
-                                                </span>
+                                            <div className="flex justify-between w-full items-center text-slate-700">
+                                                <div className="flex flex-col">
+                                                    <span className="font-bold">{sub}</span>
+                                                    {isBioDisabled && <span className="text-[10px] text-red-500 font-bold uppercase">Unavailable for this prep</span>}
+                                                    {isIncluded && <span className="text-[10px] text-green-600 font-bold uppercase">Included in General</span>}
+                                                </div>
+                                                <span className={`text-xs font-black ${isBioDisabled ? 'text-gray-300 line-through' : 'text-blue-600'}`}>₹{price}</span>
                                             </div>
                                         </label>
                                     );
                                 })}
                             </div>
-                            {selections.category === 'IIT-JEE' && (
-                                <p className="mt-2 text-xs text-gray-500 italic">* Biology is strictly for NEET preparation only.</p>
-                            )}
                         </div>
 
-                        {/* MODE SELECTION */}
                         <div>
-                            <label className="block font-bold mb-3">3. Learning Mode</label>
+                            <label className="block font-bold mb-3 text-slate-700">3. Mode</label>
                             <div className="flex gap-4">
                                 {['Online', 'Offline'].map(m => (
-                                    <button
-                                        key={m}
-                                        onClick={() => setSelections({ ...selections, mode: m })}
-                                        className={`flex-1 py-3 rounded-xl font-bold border transition ${selections.mode === m ? 'bg-blue-700 text-white border-blue-700 shadow-md' : 'bg-white text-gray-600 border-gray-200'}`}
-                                    >
+                                    <button key={m} onClick={() => setSelections({ ...selections, mode: m })} className={`flex-1 py-3 rounded-xl font-bold border transition ${selections.mode === m ? 'bg-blue-700 text-white border-blue-700' : 'bg-white text-slate-600 border-gray-200'}`}>
                                         {m}
                                     </button>
                                 ))}
@@ -168,93 +171,92 @@ const CustomizeCourse = () => {
                         </div>
                     </div>
 
-                    {/* RIGHT SIDE: FEE BREAKDOWN */}
+                    {/* RIGHT SIDE SUMMARY */}
                     <div className="bg-blue-900 text-white p-8 rounded-2xl flex flex-col justify-between shadow-2xl">
                         <div>
-                            <h3 className="text-xl font-bold mb-6 border-b border-blue-700 pb-4 text-blue-200">Fee Breakdown</h3>
+                            <h3 className="text-xs font-bold mb-6 border-b border-blue-700 pb-4 text-blue-200 uppercase text-x tracking-widest">Fee Summary</h3>
                             <div className="space-y-4">
-                                <div className="flex justify-between">
-                                    <span>Tuition {selections.subjects.includes('General') ? '(Pack)' : `(${selections.subjects.length} Subjects)`}</span>
-                                    <span className="font-mono">₹{tuition}</span>
-                                </div>
-
+                                <div className="flex justify-between text-sm"><span>Tuition</span><span className="font-mono">₹{tuition}</span></div>
                                 {selections.mode === 'Offline' ? (
-                                    <>
-                                        <div className="flex justify-between text-sm text-blue-300">
-                                            <span>+ Institution Fee</span>
-                                            <span className="font-mono">₹{institutionFee}</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm text-blue-300">
-                                            <span>+ Development Fee</span>
-                                            <span className="font-mono">₹{developmentFee}</span>
-                                        </div>
-                                    </>
+                                    <><div className="flex justify-between text-xm text-blue-300"><span>+ Admission Fee</span><span>₹{institutionFee}</span></div>
+                                    <div className="flex justify-between text-xm text-blue-300"><span>+ Infrastructure</span><span>₹{developmentFee}</span></div></>
                                 ) : (
-                                    <div className="flex justify-between text-sm text-blue-300">
-                                        <span>+ Online Arrangement</span>
-                                        <span className="font-mono">₹{onlineArrangementFee}</span>
-                                    </div>
+                                    <div className="flex justify-between text-xm text-blue-300"><span>+ Digital Portal</span><span>₹{onlineArrangementFee}</span></div>
                                 )}
                             </div>
                         </div>
 
-                        <div className="mt-10 border-t border-blue-700 pt-6">
+                        <div className="mt-10 pt-6 border-t border-blue-700">
                             <div className="flex justify-between items-end mb-8">
-                                <span className="text-blue-300">Total Joining Fee</span>
+                                <span className="text-blue-300 text-xs font-bold">GRAND TOTAL</span>
                                 <span className="text-4xl font-black text-green-400 font-mono">₹{total}</span>
                             </div>
-                            <button
-                                onClick={handleEnrollClick}
-                                className="w-full bg-green-500 hover:bg-green-600 py-4 rounded-xl font-black text-lg transition transform hover:scale-[1.02] active:scale-95 shadow-lg text-white"
-                            >
-                                Confirm & Enroll
-                            </button>
+                            <button onClick={handleConfirmClick} className="w-full bg-green-500 hover:bg-green-600 py-5 rounded-xl font-black text-lg transition shadow-xl">Confirm & Enroll</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* --- MODAL --- */}
+            {/* MODAL SYSTEM */}
             {modalConfig.show && (
-                <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                    <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
-                        <div className="text-center">
-                            {modalConfig.type === 'error' ? (
-                                <>
-                                    <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 text-red-600 mb-4">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                                        </svg>
-                                    </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Select a Subject</h3>
-                                    <p className="text-gray-600 mb-6">Please select at least one subject to calculate your personalized fee.</p>
-                                    <button
-                                        onClick={() => setModalConfig({ show: false, type: '' })}
-                                        className="w-full bg-gray-800 text-white font-bold py-3 rounded-xl"
+                <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                    <div className="absolute inset-0" onClick={() => setModalConfig({ show: false, type: '' })}></div>
+                    <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative z-10">
+                        
+                        {modalConfig.type === 'error' && (
+                            <div className="text-center">
+                                <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 text-red-600 mb-6 text-2xl font-bold">!</div>
+                                <h3 className="text-xl font-black text-slate-800 mb-2">Selection Required</h3>
+                                <p className="text-slate-600 mb-8">Please select at least one subject before enrolling.</p>
+                                <button onClick={() => setModalConfig({ show: false, type: '' })} className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold">Go Back</button>
+                            </div>
+                        )}
+
+                        {modalConfig.type === 'policy' && (
+                            <div className="text-center">
+                                <h3 className="text-xl font-bold text-slate-800 mb-2 uppercase tracking-widest">Enrollment Policy</h3>
+                                <p className="text-slate-600 text-sm mb-6">
+                                    The amount <span className="font-bold text-blue-700">₹{total}</span> is the one time admission fee.<br /> Monthly tuition starts next month.
+                                </p>
+                                <div className="space-y-3">
+                                    <button onClick={() => setModalConfig({ ...modalConfig, type: 'email' })} className="w-full bg-blue-700 text-white py-4 rounded-xl font-black uppercase">Accept & Proceed</button>
+                                    <button onClick={() => setModalConfig({ show: false, type: '' })} className="w-full text-slate-400 text-xs font-bold">Cancel</button>
+                                </div>
+                            </div>
+                        )}
+
+                        {modalConfig.type === 'email' && (
+                            <div className="text-center">
+                                <h3 className="text-xl font-bold text-slate-800 mb-2">Secure Your Seat</h3>
+                                <form onSubmit={handleFormSubmit} className="space-y-4">
+                                    <input 
+                                        type="email" 
+                                        required 
+                                        placeholder="Enter your email" 
+                                        className="w-full p-4 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-slate-800" 
+                                        value={email} 
+                                        onChange={(e) => setEmail(e.target.value)} 
+                                    />
+                                    <button 
+                                        type="submit" 
+                                        disabled={isSubmitting}
+                                        className="w-full bg-blue-700 text-white py-4 rounded-xl font-black uppercase disabled:bg-slate-400"
                                     >
-                                        Got it
+                                        {isSubmitting ? "Sending..." : "Finish Enrollment"}
                                     </button>
-                                </>
-                            ) : (
-                                <>
-                                    <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 text-blue-600 mb-4">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                                        </svg>
-                                    </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Enrollment Policy</h3>
-                                    <p className="text-gray-600 text-sm mb-6">
-                                        The amount <span className="font-bold text-blue-700">₹{total}</span> is the initial admission fee. Regular tuition will be billed monthly.
-                                    </p>
-                                    <button
-                                        onClick={() => setModalConfig({ show: false, type: '' })}
-                                        className="w-full bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg"
-                                    >
-                                        Accept & Proceed
-                                    </button>
-                                </>
-                            )}
-                        </div>
+                                    <button type="button" onClick={() => setModalConfig({ ...modalConfig, type: 'policy' })} className="w-full text-slate-400 text-xs font-bold underline">Back</button>
+                                </form>
+                            </div>
+                        )}
+
+                        {modalConfig.type === 'success' && (
+                            <div className="text-center py-4">
+                                <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 text-green-600 mb-4 text-2xl">✓</div>
+                                <h3 className="text-2xl font-bold text-slate-900 mb-3">REQUEST SENT</h3>
+                                <p className="text-slate-600 mb-8 text-sm">Please visit the institution to complete your admission.</p>
+                                <button onClick={() => setModalConfig({ show: false })} className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold">Close</button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
