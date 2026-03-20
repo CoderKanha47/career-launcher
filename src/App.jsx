@@ -19,7 +19,7 @@ const Header = () => (
   <header className="sticky top-0 z-50 bg-white shadow-sm">
     <nav className="container mx-auto flex items-center justify-between p-4">
       <Link to="/" className="flex items-center gap-3">
-        <div className="h-10 w-10 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold">CL</div>
+        <div className="h-10 w-10 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold">EH</div>
         <span className="text-xl font-bold tracking-tight text-gray-900">EDU-HUB Academy </span>
       </Link>
       <ul className="hidden md:flex gap-8 font-medium text-gray-600">
@@ -343,9 +343,9 @@ const Footer = () => (
           </p>
           <div className="flex gap-4 pt-2">
             {/* Replace # with actual social links */}
-            <a href="#" className="hover:text-blue-500 transition-colors">Facebook</a>
+            {/* <a href="#" className="hover:text-blue-500 transition-colors">Facebook</a>
             <a href="#" className="hover:text-blue-400 transition-colors">Twitter</a>
-            <a href="#" className="hover:text-pink-500 transition-colors">Instagram</a>
+            <a href="#" className="hover:text-pink-500 transition-colors">Instagram</a> */}
           </div>
         </div>
 
